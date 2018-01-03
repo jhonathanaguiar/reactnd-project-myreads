@@ -1,28 +1,24 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import * as BooksAPI from './BooksAPI'
-import './App.css'
-import Shelf from './shelf.js'
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import './app.css';
+import Shelf from './shelf.js';
+import PropTypes from "prop-types";
 
 class ListShelves extends Component {
+    static propTypes = {
+        books: PropTypes.array.isRequired
+    };
+
     state = {
         shelves: [
             {naturalName: 'Currently Reading', apiName: 'currentlyReading'},
             {naturalName: 'Want to Read', apiName: 'wantToRead'},
-            {naturalName: 'Read', apiName: 'read'}],
-        books: []
+            {naturalName: 'Read', apiName: 'read'}]
     };
-    componentDidMount() {
-        BooksAPI.getAll().then((books) => {
-            this.setState({ books })
-        })
-    }
-    updateShelves () {
-        this.setState(state => ({
-            books: state.books
-        }));
-    };
-    render(){
+
+    render() {
+        const {shelves} = this.state;
+        const {books, onUpdateShelves} = this.props;
         return (
             <div className="list-books">
                 <div className="list-books-title">
@@ -30,10 +26,11 @@ class ListShelves extends Component {
                 </div>
                 <div className="list-books-content">
                     <div>
-                        {this.state.shelves.map( (shelf) => (
-                            <Shelf key={shelf.apiName} shelf={shelf} books={this.state.books} onUpdateShelves={() => {
-                                this.updateShelves();
-                            }}/>
+                        {shelves.map((shelf) => (
+                                <Shelf key={shelf.apiName}
+                                       shelf={shelf}
+                                       books={books}
+                                       onUpdateShelves={(books) => onUpdateShelves(books)}/>
                             )
                         )}
                     </div>
@@ -45,8 +42,8 @@ class ListShelves extends Component {
                     </Link>
                 </div>
             </div>
-        )
+        );
     }
 }
 
-export default ListShelves
+export default ListShelves;
