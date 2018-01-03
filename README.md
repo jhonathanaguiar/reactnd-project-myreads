@@ -1,4 +1,4 @@
-#My Reads
+# My Reads
 Este projeto tem como objetivo finalizar o primeiro módulo do nanodegree react da Udacity.
 
 ## Configurando
